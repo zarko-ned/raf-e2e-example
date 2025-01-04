@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+</head>
+<body>
+    <h1>Product List</h1>
+    <input type="text" id="search_box" placeholder="Search products">
+    <button id="search_button">Search</button>
+    <ul id="product_list">
+        <li data-category="electronics">Laptop</li>
+        <li data-category="electronics">Smartphone</li>
+        <li data-category="home">Vacuum Cleaner</li>
+        <li data-category="home">Microwave</li>
+        <li data-category="fashion">T-Shirt</li>
+        <li data-category="fashion">Jeans</li>
+    </ul>
+    <a href="checkout.html" id="checkout_link">Go to Checkout</a>
+
+    <script>
+        document.getElementById("search_button").addEventListener("click", function() {
+            const query = document.getElementById("search_box").value.toLowerCase();
+            const products = document.querySelectorAll("#product_list li");
+            products.forEach(product => {
+                if (product.textContent.toLowerCase().includes(query)) {
+                    product.style.display = "";
+                } else {
+                    product.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
