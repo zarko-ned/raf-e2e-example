@@ -5,7 +5,12 @@ from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
+import os
+# Dobijanje trenutnog direktorijuma
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
+# Kreiranje relativne putanje do HTML fajla
+html_file = os.path.join(current_dir, "products.html")
 # Funkcija za unos pojma preko Tkinter
 def get_search_term():
     def on_submit():
@@ -37,7 +42,7 @@ driver = webdriver.Edge(service=service)
 
 try:
     # Otvori stranicu proizvoda
-    driver.get("file:///C:/Users/Zarko/Documents/SeleniumPrimer/products.html")
+    driver.get(f"file:///{html_file}")
     print("Otvorena stranica proizvoda")
 
     # Pretraži proizvode

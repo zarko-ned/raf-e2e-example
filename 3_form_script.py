@@ -6,7 +6,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.alert import Alert
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
+import os
+# Dobijanje trenutnog direktorijuma
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
+# Kreiranje relativne putanje do HTML fajla
+html_file = os.path.join(current_dir, "checkout.html")
 # Funkcija za unos podataka preko Tkinter
 def get_checkout_details():
     def on_submit():
@@ -51,7 +56,7 @@ driver = webdriver.Edge(service=service)
 
 try:
     # Otvori stranicu za placanje
-    driver.get("file:///C:/Users/Zarko/Documents/SeleniumPrimer/checkout.html")
+    driver.get(f"file:///{html_file}")
     print("Otvorena stranica za placanje")
 
     # Popuni formu sa podacima iz Tkintera

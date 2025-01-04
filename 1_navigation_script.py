@@ -4,14 +4,22 @@ from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
+import os
+
+
+# Dobijanje trenutnog direktorijuma
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Kreiranje relativne putanje do HTML fajla
+html_file = os.path.join(current_dir, "index.html")
 
 # Konfiguracija WebDriver-a
 service = EdgeService(EdgeChromiumDriverManager().install())
 driver = webdriver.Edge(service=service)
 
 try:
-    # Otvori početnu stranicu
-    driver.get("file:///C:/Users/Zarko/Documents/SeleniumPrimer/index.html")
+    # Otvori HTML fajl koristeci relativnu putanju
+    driver.get(f"file:///{html_file}")
     print("Otvorena pocetna stranica")
 
     # Klikni na link ka stranici proizvoda
