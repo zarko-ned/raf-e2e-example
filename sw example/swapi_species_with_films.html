@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SWAPI Species Info</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .species-info {
+      margin-top: 20px;
+    }
+
+    .info-item {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #fafafa;
+      border-radius: 4px;
+    }
+
+    .info-item strong {
+      color: #333;
+    }
+
+    .movies-list {
+      margin-top: 20px;
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .movies-list li {
+      margin: 5px 0;
+      background-color: #e0e0e0;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .movies-list li:hover {
+      background-color: #d0d0d0;
+    }
+
+    #loading {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Species Info from SWAPI</h1>
+    <div id="loading">Loading...</div>
+    <div id="species-info" class="species-info"></div>
+
+    <h2>Featured Films:</h2>
+    <ul id="movies-list" class="movies-list"></ul>
+  </div>
+
+  <script>
+    // Poziv SWAPI API za vrstu 3
+    fetch("https://swapi.py4e.com/api/species/3/")
+      .then(response => response.json())
+      .then(data => {
+        // Prikazivanje podataka o vrsti
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("species-info").innerHTML = `
+          <div class="info-item">
+            <strong>Name:</strong> ${data.name}
+          </div>
+          <div class="info-item">
+            <strong>Classification:</strong> ${data.classification}
+          </div>
+          <div class="info-item">
+            <strong>Language:</strong> ${data.language}
+          </div>
+          <div class="info-item">
+            <strong>Average Lifespan:</strong> ${data.average_lifespan} years
+          </div>
+        `;
+
+        // Popunjavaj filmske linkove
+        const moviesList = document.getElementById("movies-list");
+        data.films.forEach((filmUrl) => {
+          fetch(filmUrl)
+            .then(response => response.json())
+            .then(filmData => {
+              const li = document.createElement("li");
+              li.textContent = filmData.title;
+              li.onclick = () => {
+                openFilmDetails(filmData);
+              };
+              moviesList.appendChild(li);
+            });
+        });
+      })
+      .catch(error => {
+        document.getElementById("loading").innerText = "Error loading data";
+        console.error(error);
+      });
+
+    function openFilmDetails(filmData) {
+      const filmDetails = `
+        <h2>${filmData.title}</h2>
+        <div><strong>Director:</strong> ${filmData.director}</div>
+        <div><strong>Producer:</strong> ${filmData.producer}</div>
+        <div><strong>Release Date:</strong> ${filmData.release_date}</div>
+        <div><strong>Opening Crawl:</strong><br>${filmData.opening_crawl}</div>
+      `;
+      const filmWindow = window.open("", "_blank", "width=800,height=600");
+      filmWindow.document.write(filmDetails);
+    }
+  </script>
+</body>
+</html>
